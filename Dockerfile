@@ -1,23 +1,28 @@
-FROM python:slim 
+FROM python:slim
 
-ENV PYTHONDONTWRITEBYTECODE = 1 \
-    PYTHONUNBUFFERED =1
+# Environment variables (no spaces around '='!)
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install recommends \
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
-    && apt-get-clean \
-    && rm-rf /var/lib/apt/lists/*
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-
+# Copy project files
 COPY . .
 
+# Install Python dependencies
 RUN pip install --no-cache-dir -e .
 
-RUN python pipeline/training_pipeline.py 
+# Optional: run training pipeline during image build (not always recommended)
+RUN python pipeline/training_pipeline.py
 
+# Expose the port
 EXPOSE 5000
 
-CMD["python","application.py"]
-
+# Run application (space after CMD, fix syntax)
+CMD ["python", "application.py"]
