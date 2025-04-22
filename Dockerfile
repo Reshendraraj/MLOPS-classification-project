@@ -19,7 +19,7 @@ COPY . .
 RUN pip install --no-cache-dir -e .
 
 # Optional: run training pipeline during image build (not always recommended)
-RUN python pipeline/training_pipeline.py
+# RUN python pipeline/training_pipeline.py
 
 # Expose the port
 EXPOSE 5000
